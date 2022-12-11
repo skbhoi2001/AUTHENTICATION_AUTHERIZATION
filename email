@@ -6,3 +6,21 @@ var transport = nodemailer.createTransport({
     pass: '833448aa04fbf2',
   },
 });
+
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
+
+mongoose
+  .connect(process.env.MONGO_URI, { useNewUrlparser: true })
+  .then(() => {
+    console.log('db is connected!');
+  })
+  .catch((ex) => {
+    console.log('db connection failed: ', ex);
+  });
+
+
+JWT_SECRET=fjaksdkflKFAFkfajdsfh
+MONGO_URI=mongodb+srv://soumyak:Soumyak_2001@cluster0.rmf9lfi.mongodb.net/test
+MAIL_TRAP_USER=b43110878406fc
+MAIL_TRAP_PASS=833448aa04fbf2
