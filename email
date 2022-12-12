@@ -20,7 +20,7 @@ mongoose
   });
 
 
-JWT_SECRET=fjaksdkflKFAFkfajdsfh
-MONGO_URI=mongodb+srv://soumyak:Soumyak_2001@cluster0.rmf9lfi.mongodb.net/test
-MAIL_TRAP_USER=b43110878406fc
-MAIL_TRAP_PASS=833448aa04fbf2
+  JWT_SECRET=fjaksdkflKFAFkfajdsfh
+  MONGO_URI=mongodb+srv://soumyak:Soumyak_2001@cluster0.rmf9lfi.mongodb.net/test
+  MAIL_TRAP_USER=b43110878406fc
+  MAIL_TRAP_PASS=833448aa04fbf2
