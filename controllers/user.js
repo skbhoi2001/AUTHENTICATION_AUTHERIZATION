@@ -41,12 +41,10 @@ exports.create = async (req, res) => {
     `,
   });
 
-  res
-    .status(201)
-    .json({
-      message:
-        'Please verify you email. OTP has been sent to your email account!',
-    });
+  res.status(201).json({
+    message:
+      'Please verify you email. OTP has been sent to your email account!',
+  });
 };
 
 exports.verifyEmail = async (req, res) => {
@@ -218,7 +216,7 @@ exports.signIn = async (req, res) => {
 
   const { _id, name } = user;
 
-  const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET);
+  const jwtToken = jwt.sign({ userId: _id }, `fjaksdkflKFAFkfajdsfh`);
 
   res.json({
     user: { id: _id, name, email, token: jwtToken },
