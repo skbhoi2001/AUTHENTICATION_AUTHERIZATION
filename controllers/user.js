@@ -42,8 +42,10 @@ exports.create = async (req, res) => {
   });
 
   res.status(201).json({
+    statusId: 1,
     message:
       'Please verify you email. OTP has been sent to your email account!',
+    res: newUser,
   });
 };
 
@@ -220,5 +222,14 @@ exports.signIn = async (req, res) => {
 
   res.json({
     user: { id: _id, name, email, token: jwtToken },
+  });
+};
+
+exports.getUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.status(200).json({
+    statusId: 1,
+    data: user,
   });
 };
