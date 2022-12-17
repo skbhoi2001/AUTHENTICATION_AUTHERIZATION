@@ -1,4 +1,4 @@
- const crypto = require('crypto');
+const crypto = require('crypto');
 const cloudinary = require('../cloud');
 
 exports.sendError = (res, error, statusCode = 401) =>
