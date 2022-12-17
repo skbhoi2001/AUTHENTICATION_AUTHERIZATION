@@ -3,7 +3,7 @@ mongoose.set('strictQuery', false);
 
 mongoose
   .connect(
-    `mongodb+srv://soumyak:Soumyak_2001@cluster0.rmf9lfi.mongodb.net/test`,
+    `mongodb+srv://soumyak:Soumyak_2001@cluster0.rmf9lfi.mongodb.net/movieDb`,
     { useNewUrlparser: true }
   )
   .then(() => {
