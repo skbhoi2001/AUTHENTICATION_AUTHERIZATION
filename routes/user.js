@@ -19,11 +19,11 @@ const {
 
 const router = express.Router();
 
-router.post('/create', userValidtor, validate, create);
-router.post('/sign-in', signInValidator, validate, signIn);
-router.post('/verify-email', verifyEmail);
-router.post('/resend-email-verification-token', resendEmailVerificationToken);
-router.post('/forget-password', forgetPassword);
+router.post('/create', userValidtor, validate, create); //done
+router.post('/verify-email', verifyEmail); //done
+router.post('/resend-email-verification-token', resendEmailVerificationToken); //done
+router.post('/sign-in', signInValidator, validate, signIn); //done
+router.post('/forget-password', forgetPassword); 
 router.post(
   '/verify-pass-reset-token',
   isValidPassResetToken,
