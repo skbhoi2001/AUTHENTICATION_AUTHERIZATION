@@ -7,13 +7,13 @@ const { sendError, generateRandomByte } = require('../utils/helper');
 const PasswordResetToken = require('../models/passwordResetToken');
 
 exports.create = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   const oldUser = await User.findOne({ email });
 
   if (oldUser) return sendError(res, 'This email is already in use!');
 
-  const newUser = new User({ name, email, password });
+  const newUser = new User({ name, email, password, role });
   await newUser.save();
 
   // generate 6 digit otp
@@ -46,6 +46,7 @@ exports.create = async (req, res) => {
       id: newUser._id,
       name: newUser.name,
       email: newUser.email,
+      role: newUser.role,
     },
   });
 };
