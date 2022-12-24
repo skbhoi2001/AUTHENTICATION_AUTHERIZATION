@@ -30,7 +30,7 @@ exports.createMovie = async (req, res) => {
   const {
     title,
     storyLine,
-    director,
+    // director,
     releseDate,
     status,
     type,
@@ -55,11 +55,11 @@ exports.createMovie = async (req, res) => {
     language,
   });
 
-  if (director) {
-    if (!isValidObjectId(director))
-      return sendError(res, 'Invalid director id!');
-    newMovie.director = director;
-  }
+  // if (director) {
+  //   if (!isValidObjectId(director))
+  //     return sendError(res, 'Invalid director id!');
+  //   newMovie.director = director;
+  // }
 
   if (writers) {
     for (let writerId of writers) {
@@ -121,7 +121,7 @@ exports.updateMovieWithoutPoster = async (req, res) => {
   const {
     title,
     storyLine,
-    director,
+    // director,
     releseDate,
     status,
     type,
@@ -144,11 +144,11 @@ exports.updateMovieWithoutPoster = async (req, res) => {
   movie.trailer = trailer;
   movie.language = language;
 
-  if (director) {
-    if (!isValidObjectId(director))
-      return sendError(res, 'Invalid director id!');
-    movie.director = director;
-  }
+  // if (director) {
+  //   if (!isValidObjectId(director))
+  //     return sendError(res, 'Invalid director id!');
+  //   movie.director = director;
+  // }
 
   if (writers) {
     for (let writerId of writers) {
@@ -178,7 +178,7 @@ exports.updateMovie = async (req, res) => {
   const {
     title,
     storyLine,
-    director,
+    // director,
     releseDate,
     status,
     type,
@@ -200,11 +200,11 @@ exports.updateMovie = async (req, res) => {
   movie.cast = cast;
   movie.language = language;
 
-  if (director) {
-    if (!isValidObjectId(director))
-      return sendError(res, 'Invalid director id!');
-    movie.director = director;
-  }
+  // if (director) {
+  //   if (!isValidObjectId(director))
+  //     return sendError(res, 'Invalid director id!');
+  //   movie.director = director;
+  // }
 
   if (writers) {
     for (let writerId of writers) {
@@ -328,7 +328,7 @@ exports.getMovieForUpdate = async (req, res) => {
   if (!isValidObjectId(movieId)) return sendError(res, 'Id is invalid!');
 
   const movie = await Movie.findById(movieId).populate(
-    'director writers cast.actor'
+    'writers cast.actor'
   );
 
   res.json({
@@ -343,7 +343,7 @@ exports.getMovieForUpdate = async (req, res) => {
       language: movie.language,
       genres: movie.genres,
       tags: movie.tags,
-      director: formatActor(movie.director),
+      // director: formatActor(movie.director),
       writers: movie.writers.map((w) => formatActor(w)),
       cast: movie.cast.map((c) => {
         return {
@@ -396,6 +396,7 @@ exports.getLatestUploads = async (req, res) => {
 };
 
 exports.getSingleMovie = async (req, res) => {
+  console.log(req.params);
   const { movieId } = req.params;
 
   // mongoose.Types.ObjectId(movieId)
@@ -403,9 +404,7 @@ exports.getSingleMovie = async (req, res) => {
   if (!isValidObjectId(movieId))
     return sendError(res, 'Movie id is not valid!');
 
-  const movie = await Movie.findById(movieId).populate(
-    'director writers cast.actor'
-  );
+  const movie = await Movie.findById(movieId).populate('writers cast.actor');
 
   const [aggregatedResponse] = await Review.aggregate(
     averageRatingPipeline(movie._id)
@@ -425,7 +424,7 @@ exports.getSingleMovie = async (req, res) => {
     storyLine,
     cast,
     writers,
-    director,
+    // director,
     releseDate,
     genres,
     tags,
@@ -461,10 +460,10 @@ exports.getSingleMovie = async (req, res) => {
         id: w._id,
         name: w.name,
       })),
-      director: {
-        id: director._id,
-        name: director.name,
-      },
+      // director: {
+      //   id: director._id,
+      //   name: director.name,
+      // },
       reviews: { ...reviews },
     },
   });
