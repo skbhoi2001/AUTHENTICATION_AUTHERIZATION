@@ -42,6 +42,7 @@ exports.create = async (req, res) => {
   });
 
   res.status(201).json({
+    statusId: 1,
     user: {
       id: newUser._id,
       name: newUser.name,
@@ -83,6 +84,7 @@ exports.verifyEmail = async (req, res) => {
 
   const jwtToken = jwt.sign({ userId: user._id }, 'fjaksdkflKFAFkfajdsfh');
   res.json({
+    statusId: 1,
     user: {
       id: user._id,
       name: user.name,
@@ -139,6 +141,7 @@ exports.resendEmailVerificationToken = async (req, res) => {
   });
 
   res.json({
+    statusId: 1,
     message: 'New OTP has been sent to your registered email accout.',
   });
 };
@@ -165,7 +168,7 @@ exports.forgetPassword = async (req, res) => {
   });
   await newPasswordResetToken.save();
 
-  const resetPasswordUrl = `http://localhost:3000/auth/reset-password?token=${token}&id=${user._id}`;
+  const resetPasswordUrl = `http://localhost:3000/auth/reset-password/${user._id}?token=${token}`;
 
   const transport = generateMailTransporter();
 
@@ -179,7 +182,10 @@ exports.forgetPassword = async (req, res) => {
     `,
   });
 
-  res.json({ message: 'Link sent to your email!' });
+  res.json({
+    message: 'Link sent to your email!',
+    statusId: 1,
+  });
 };
 
 exports.sendResetPasswordTokenStatus = (req, res) => {
@@ -216,6 +222,7 @@ exports.resetPassword = async (req, res) => {
   });
 
   res.json({
+    statusId: 1,
     message: 'Password reset successfully, now you can use new password.',
   });
 };
@@ -234,6 +241,15 @@ exports.signIn = async (req, res) => {
   const jwtToken = jwt.sign({ userId: _id }, 'fjaksdkflKFAFkfajdsfh');
 
   res.json({
-    user: { id: _id, name, email, role, token: jwtToken, isVerified },
+    statusId: 1,
+    user: {
+      id: _id,
+      name: name,
+      email: email,
+      token: jwtToken,
+      isVerified: isVerified,
+      role: role,
+    },
+    // user: { id: _id, name, email, role, token: jwtToken, isVerified },
   });
 };
