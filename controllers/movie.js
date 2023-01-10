@@ -103,6 +103,7 @@ exports.createMovie = async (req, res) => {
   await newMovie.save();
 
   res.status(201).json({
+    statusId: 1,
     movie: {
       id: newMovie._id,
       title,
@@ -161,7 +162,7 @@ exports.updateMovieWithoutPoster = async (req, res) => {
 
   await movie.save();
 
-  res.json({ message: 'Movie is updated', movie });
+  res.json({ statusId: 1, message: 'Movie is updated', movie });
 };
 
 exports.updateMovie = async (req, res) => {
@@ -259,6 +260,7 @@ exports.updateMovie = async (req, res) => {
   await movie.save();
 
   res.json({
+    statusId: 1,
     message: 'Movie is updated',
     movie: {
       id: movie._id,
@@ -299,7 +301,7 @@ exports.removeMovie = async (req, res) => {
 
   await Movie.findByIdAndDelete(movieId);
 
-  res.json({ message: 'Movie removed successfully.' });
+  res.json({ statusId: 1, message: 'Movie removed successfully.' });
 };
 
 exports.getMovies = async (req, res) => {
@@ -319,7 +321,7 @@ exports.getMovies = async (req, res) => {
     status: movie.status,
   }));
 
-  res.json({ movies: results });
+  res.json({ statusId: 1, movies: results });
 };
 
 exports.getMovieForUpdate = async (req, res) => {
@@ -327,11 +329,10 @@ exports.getMovieForUpdate = async (req, res) => {
 
   if (!isValidObjectId(movieId)) return sendError(res, 'Id is invalid!');
 
-  const movie = await Movie.findById(movieId).populate(
-    'writers cast.actor'
-  );
+  const movie = await Movie.findById(movieId).populate('writers cast.actor');
 
   res.json({
+    statusId: 1,
     movie: {
       id: movie._id,
       title: movie.title,
@@ -364,6 +365,7 @@ exports.searchMovies = async (req, res) => {
 
   const movies = await Movie.find({ title: { $regex: title, $options: 'i' } });
   res.json({
+    statusId: 1,
     results: movies.map((m) => {
       return {
         id: m._id,
@@ -392,7 +394,7 @@ exports.getLatestUploads = async (req, res) => {
       trailer: m.trailer?.url,
     };
   });
-  res.json({ movies });
+  res.json({ statusId: 1, movies });
 };
 
 exports.getSingleMovie = async (req, res) => {
@@ -435,6 +437,7 @@ exports.getSingleMovie = async (req, res) => {
   } = movie;
 
   res.json({
+    statusId: 1,
     movie: {
       id,
       title,
@@ -491,7 +494,7 @@ exports.getRelatedMovies = async (req, res) => {
   };
   const relatedMovies = await Promise.all(movies.map(mapMovies));
 
-  res.json({ movies: relatedMovies });
+  res.json({ statusId: 1, movies: relatedMovies });
 };
 
 exports.getTopRatedMovies = async (req, res) => {
@@ -513,5 +516,5 @@ exports.getTopRatedMovies = async (req, res) => {
 
   const topRatedMovies = await Promise.all(movies.map(mapMovies));
 
-  res.json({ movies: topRatedMovies });
+  res.json({ statusId: 1, movies: topRatedMovies });
 };

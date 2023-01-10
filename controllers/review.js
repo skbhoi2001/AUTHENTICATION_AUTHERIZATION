@@ -35,7 +35,7 @@ exports.addReview = async (req, res) => {
   // saving new review
   await newReview.save();
 
-  res.json({ message: 'Your review has been added.' });
+  res.json({ statusId: 1, message: 'Your review has been added.' });
 };
 
 exports.updateReview = async (req, res) => {
@@ -53,7 +53,7 @@ exports.updateReview = async (req, res) => {
 
   await review.save();
 
-  res.json({ message: 'Your review has been updated.' });
+  res.json({ statusId: 1, message: 'Your review has been updated.' });
 };
 
 exports.removeReview = async (req, res) => {
@@ -72,7 +72,7 @@ exports.removeReview = async (req, res) => {
 
   await movie.save();
 
-  res.json({ message: 'Review removed successfully.' });
+  res.json({ statusId: 1, message: 'Review removed successfully.' });
 };
 
 exports.getReviewsByMovie = async (req, res) => {
@@ -105,5 +105,5 @@ exports.getReviewsByMovie = async (req, res) => {
     };
   });
 
-  res.json({ reviews });
+  res.json({ statusId: 1, reviews });
 };

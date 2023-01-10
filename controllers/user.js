@@ -250,6 +250,5 @@ exports.signIn = async (req, res) => {
       isVerified: isVerified,
       role: role,
     },
-    // user: { id: _id, name, email, role, token: jwtToken, isVerified },
   });
 };
