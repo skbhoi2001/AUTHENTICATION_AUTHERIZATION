@@ -80,7 +80,7 @@ exports.verifyEmail = async (req, res) => {
     html: '<h1>Welcome to our app and thanks for choosing us.</h1>',
   });
 
-  const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+  const jwtToken = jwt.sign({ userId: user._id }, 'fjaksdkflKFAFkfajdsfh');
   res.json({
     user: {
       id: user._id,
@@ -230,7 +230,7 @@ exports.signIn = async (req, res) => {
 
   const { _id, name, role, isVerified } = user;
 
-  const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET);
+  const jwtToken = jwt.sign({ userId: _id }, 'fjaksdkflKFAFkfajdsfh');
 
   res.json({
     user: { id: _id, name, email, role, token: jwtToken, isVerified },
