@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const http = require('http');
 const { errorHandler } = require('./middlewares/error');
 const cors = require('cors');
+const server = http.createServer(app);
 const { Server } = require('socket.io');
 require('dotenv').config();
 require('./db');
