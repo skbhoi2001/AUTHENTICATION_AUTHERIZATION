@@ -1,10 +1,16 @@
 require('express-async-errors');
 const express = require('express');
 const morgan = require('morgan');
+const http = require('http');
 const { errorHandler } = require('./middlewares/error');
 const cors = require('cors');
+const { Server } = require('socket.io');
 require('dotenv').config();
 require('./db');
+const io = new Server(server, {
+  cors: 'https://movie-review-pi.vercel.app',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+});
 const userRouter = require('./routes/user');
 const actorRouter = require('./routes/actor');
 const movieRouter = require('./routes/movie');
@@ -24,7 +30,7 @@ app.use('/api/admin', adminRouter);
 app.use('/*', handleNotFound);
 
 app.use(errorHandler);
-
+app.set('socketio', io);
 // app.post("/sign-in",
 //   (req, res, next) => {
 //     const { email, password } = req.body
