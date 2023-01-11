@@ -10,7 +10,6 @@ const cloudinary = require('../cloud');
 exports.createActor = async (req, res) => {
   const { name, about, gender } = req.body;
   const { file } = req;
-  console.log(req);
 
   const newActor = new Actor({ name, about, gender });
 
@@ -19,7 +18,7 @@ exports.createActor = async (req, res) => {
     newActor.avatar = { url, public_id };
   }
   await newActor.save();
-  res.status(201).json({ statusId: 1, actor: formatActor(newActor) });
+  res.status(201).json({ actor: formatActor(newActor) });
 };
 
 // update
@@ -59,7 +58,7 @@ exports.updateActor = async (req, res) => {
 
   await actor.save();
 
-  res.status(201).json({ statusId: 1, actor: formatActor(actor) });
+  res.status(201).json({ actor: formatActor(actor) });
 };
 
 exports.removeActor = async (req, res) => {
@@ -82,7 +81,7 @@ exports.removeActor = async (req, res) => {
 
   await Actor.findByIdAndDelete(actorId);
 
-  res.json({ statusId: 1, message: 'Record removed successfully.' });
+  res.json({ message: 'Record removed successfully.' });
 };
 
 exports.searchActor = async (req, res) => {
@@ -94,7 +93,7 @@ exports.searchActor = async (req, res) => {
   });
 
   const actors = result.map((actor) => formatActor(actor));
-  res.json({ statusId: 1, results: actors });
+  res.json({ results: actors });
 };
 
 exports.getLatestActors = async (req, res) => {
@@ -112,7 +111,7 @@ exports.getSingleActor = async (req, res) => {
 
   const actor = await Actor.findById(id);
   if (!actor) return sendError(res, 'Invalid request, actor not found!', 404);
-  res.json(formatActor(actor));
+  res.json({ actor: formatActor(actor) });
 };
 
 exports.getActors = async (req, res) => {
@@ -125,7 +124,6 @@ exports.getActors = async (req, res) => {
 
   const profiles = actors.map((actor) => formatActor(actor));
   res.json({
-    statusId: 1,
     profiles,
   });
 };

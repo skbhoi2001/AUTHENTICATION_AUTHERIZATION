@@ -1,12 +1,15 @@
 const { isValidObjectId } = require('mongoose');
 const Movie = require('../models/movie');
 const Review = require('../models/review');
-const { sendError } = require('../utils/helper');
+const { sendError, getAverageRatings } = require('../utils/helper');
 
 exports.addReview = async (req, res) => {
   const { movieId } = req.params;
   const { content, rating } = req.body;
   const userId = req.user._id;
+
+  if (!req.user.isVerified)
+    return sendError(res, 'Please verify you email first!');
 
   if (!isValidObjectId(movieId)) return sendError(res, 'Invalid Movie!');
 
@@ -35,7 +38,9 @@ exports.addReview = async (req, res) => {
   // saving new review
   await newReview.save();
 
-  res.json({ statusId: 1, message: 'Your review has been added.' });
+  const reviews = await getAverageRatings(movie._id);
+
+  res.json({ message: 'Your review has been added.', reviews });
 };
 
 exports.updateReview = async (req, res) => {
@@ -53,7 +58,7 @@ exports.updateReview = async (req, res) => {
 
   await review.save();
 
-  res.json({ statusId: 1, message: 'Your review has been updated.' });
+  res.json({ message: 'Your review has been updated.' });
 };
 
 exports.removeReview = async (req, res) => {
@@ -72,7 +77,7 @@ exports.removeReview = async (req, res) => {
 
   await movie.save();
 
-  res.json({ statusId: 1, message: 'Review removed successfully.' });
+  res.json({ message: 'Review removed successfully.' });
 };
 
 exports.getReviewsByMovie = async (req, res) => {
@@ -88,7 +93,7 @@ exports.getReviewsByMovie = async (req, res) => {
         select: 'name',
       },
     })
-    .select('reviews');
+    .select('reviews title');
 
   const reviews = movie.reviews.map((r) => {
     const { owner, content, rating, _id: reviewID } = r;
@@ -105,5 +110,5 @@ exports.getReviewsByMovie = async (req, res) => {
     };
   });
 
-  res.json({ statusId: 1, reviews });
+  res.json({ movie: { reviews, title: movie.title } });
 };

@@ -7,13 +7,13 @@ const { sendError, generateRandomByte } = require('../utils/helper');
 const PasswordResetToken = require('../models/passwordResetToken');
 
 exports.create = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   const oldUser = await User.findOne({ email });
 
   if (oldUser) return sendError(res, 'This email is already in use!');
 
-  const newUser = new User({ name, email, password, role });
+  const newUser = new User({ name, email, password });
   await newUser.save();
 
   // generate 6 digit otp
@@ -42,12 +42,10 @@ exports.create = async (req, res) => {
   });
 
   res.status(201).json({
-    statusId: 1,
     user: {
       id: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      role: newUser.role,
     },
   });
 };
@@ -82,9 +80,8 @@ exports.verifyEmail = async (req, res) => {
     html: '<h1>Welcome to our app and thanks for choosing us.</h1>',
   });
 
-  const jwtToken = jwt.sign({ userId: user._id }, 'fjaksdkflKFAFkfajdsfh');
+  const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
   res.json({
-    statusId: 1,
     user: {
       id: user._id,
       name: user.name,
@@ -141,7 +138,6 @@ exports.resendEmailVerificationToken = async (req, res) => {
   });
 
   res.json({
-    statusId: 1,
     message: 'New OTP has been sent to your registered email accout.',
   });
 };
@@ -168,7 +164,7 @@ exports.forgetPassword = async (req, res) => {
   });
   await newPasswordResetToken.save();
 
-  const resetPasswordUrl = `http://localhost:3000/auth/reset-password/${user._id}?token=${token}`;
+  const resetPasswordUrl = `http://localhost:3000/auth/reset-password?token=${token}&id=${user._id}`;
 
   const transport = generateMailTransporter();
 
@@ -182,10 +178,7 @@ exports.forgetPassword = async (req, res) => {
     `,
   });
 
-  res.json({
-    message: 'Link sent to your email!',
-    statusId: 1,
-  });
+  res.json({ message: 'Link sent to your email!' });
 };
 
 exports.sendResetPasswordTokenStatus = (req, res) => {
@@ -222,7 +215,6 @@ exports.resetPassword = async (req, res) => {
   });
 
   res.json({
-    statusId: 1,
     message: 'Password reset successfully, now you can use new password.',
   });
 };
@@ -238,17 +230,9 @@ exports.signIn = async (req, res) => {
 
   const { _id, name, role, isVerified } = user;
 
-  const jwtToken = jwt.sign({ userId: _id }, 'fjaksdkflKFAFkfajdsfh');
+  const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET);
 
   res.json({
-    statusId: 1,
-    user: {
-      id: _id,
-      name: name,
-      email: email,
-      token: jwtToken,
-      isVerified: isVerified,
-      role: role,
-    },
+    user: { id: _id, name, email, role, token: jwtToken, isVerified },
   });
 };
